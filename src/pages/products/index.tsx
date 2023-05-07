@@ -12,15 +12,16 @@ const ProductList = () => {
         ))
     console.log(data)
 
-    return <div>
-        <ul className='products'>
-            {data?.map(product =>(
-                <ProductItem {...product} key={product.id}/>
-            ))}
-        </ul>
-
-
-    </div>
+    return (
+        <div>
+            <h2>상품목록</h2>
+            <ul className='products'>
+                {data?.map(product =>(
+                    <ProductItem {...product} key={product.id}/>
+                ))}
+            </ul>
+        </div>
+    )
 }
 
 export default ProductList
