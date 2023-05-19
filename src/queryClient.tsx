@@ -66,4 +66,5 @@ export const restFetcher = async ({
 }
 export const QueryKeys = {
     PRODUCTS: 'PRODUCTS',
+    CART: 'CART'
 }

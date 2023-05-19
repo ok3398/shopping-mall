@@ -1,11 +1,10 @@
 import {graphql} from "msw";
-import {QueryKeys} from "../queryClient";
-import {v4 as uuid} from "uuid";
 import GET_PRODUCTS, {GET_PRODUCT} from "../graphql/products";
+import {ADD_CART, CartType, GET_CART} from "../graphql/cart";
 
-const mock_products = Array.from({length: 20}).map(
+const mock_products = (() => Array.from({length: 20}).map(
     (_, i) => ({
-        id: uuid(),
+        id: i + 1 + '',
         imageUrl: `https://placeimg.com/200/150/${i + 1}`,
         price: 50000,
         title: `임시상품${i + 1}`,
@@ -13,9 +12,13 @@ const mock_products = Array.from({length: 20}).map(
         createdAt: new Date(1681506921208 + (i * 1000 * 60 * 60 * 10)).toString()
 
     })
-)
+))()
+
+let cartData: { [key: string]: CartType } = (() => ({}))()
+
 export const handlers = [
     graphql.query(GET_PRODUCTS, (req, res, ctx) => {
+        console.log("<<<<<<")
         return res(
             ctx.data(
                 {
@@ -25,6 +28,39 @@ export const handlers = [
         )
     }),
     graphql.query(GET_PRODUCT, (req, res, ctx) => {
-        return res(ctx.data(mock_products[0]))
+        const found = mock_products.find(item => item.id === req.variables)
+
+        if (found) return res(ctx.data(found))
+        return res()
     }),
+    graphql.query(GET_CART, (req, res, ctx) => {
+      console.log("<<<<")
+        console.log(cartData)
+        console.log("<<<<")
+        return res(ctx.data(cartData))
+    }),
+    graphql.mutation(ADD_CART, (req, res, ctx) => {
+        const newData = {...cartData }
+        const id = req.variables.id
+
+        if (newData[id]) {
+            newData[id] = {
+                ...newData[id],
+                amount: (newData[id].amount || 0) + 1,
+            }
+        } else {
+            const found = mock_products.find(item => item.id === req.variables.id)
+            if (found) {
+                newData[id] = {
+                    ...found,
+                    amount: 1
+                }
+            }
+        }
+        cartData = newData
+
+        return res(ctx.data(newData))
+    })
+
+
 ]

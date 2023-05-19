@@ -12,7 +12,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
         <Gnb />
         {elem}
-        <ReactQueryDevtools initialIsOpen={false}/>
+        <ReactQueryDevtools initialIsOpen={true}/>
         </QueryClientProvider>
     )
 }
