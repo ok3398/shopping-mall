@@ -9,22 +9,24 @@ import request, {RequestDocument} from "graphql-request";
 
 // Create a client
 export const getClient = (() => {
-    let client: QueryClient | null = null;
+    let client: QueryClient | null = null
     return () => {
-        if(!client) client = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    cacheTime: 1000 * 60 * 60 *24,
-                    staleTime: 1000 * 60,
-                    refetchOnMount: false,
-                    refetchOnReconnect: false,
-                    refetchOnWindowFocus: false,
-                }
-            }
-        })
+        if (!client)
+            client = new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        staleTime: Infinity,
+                        cacheTime: Infinity,
+                        refetchOnMount: false,
+                        refetchOnReconnect: false,
+                        refetchOnWindowFocus: false,
+                    },
+                },
+            })
         return client
     }
 })()
+
 type AnyOBJ = {[key: string] : any}
 // const BASE_URL = 'https://fakestoreapi.com/'
 const BASE_URL = '/'

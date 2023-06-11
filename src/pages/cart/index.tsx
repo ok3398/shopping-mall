@@ -5,12 +5,9 @@ import CartList from "../../components/cart";
 import GET_PRODUCTS, {Products} from "../../graphql/products";
 
 const Cart = () => {
-    console.log("aaa")
     const {data} = useQuery<CartType>(QueryKeys.CART, () =>
-        graphqlFetcher(GET_CART)
+        graphqlFetcher(GET_CART), {staleTime: 0, cacheTime: 1000}
     )
-
-    console.log(data)
 
     const cartItems = Object.values(data || {}) as CartType[]
 
