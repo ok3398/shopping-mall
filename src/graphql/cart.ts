@@ -35,5 +35,8 @@ export const UPDATE_CART = gql`
         amount
     }    
 `
-
-
+export const DELETE_CART = gql `
+mutation DELETE_CART($id: string) {
+    id
+}
+`
