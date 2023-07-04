@@ -9,12 +9,7 @@ import {graphql} from "msw";
 import {graphqlFetcher} from "../../queryClient";
 import {EXECUTE_PAY} from "../../graphql/payment";
 
-type PayInfo = {
-    id: string;
-    amount: number;
-}
-
-type PaymentInfos = PayInfo[];
+type PaymentInfos = string[];
 const Payment = () => {
     const navigate = useNavigate()
     const [checkedCartData, setCheckedCartData] = useRecoilState(checkedCartState)
@@ -28,12 +23,13 @@ const Payment = () => {
 
     const proceed = () => {
         //결제 진행
-        const payInfos = checkedCartData.map(({ id, amount }) => (
-            { id, amount }
+        const payInfos = checkedCartData.map(({ id }) => (
+            id
         ))
 
         executePay(payInfos)
         setCheckedCartData([]) //카트 비워줌
+        alert("결제가 완료되었습니다.")
         navigate('/products', {replace: true})
     }
 
