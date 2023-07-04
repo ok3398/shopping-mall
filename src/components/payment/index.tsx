@@ -21,7 +21,6 @@ const Payment = () => {
     const [modalShown, toggleModal] = useState(false)
     const {mutate: executePay } = useMutation(
         (payInfos: PaymentInfos) => graphqlFetcher(EXECUTE_PAY, payInfos)
-
     )
     const showModal = () => {
         toggleModal(true)
@@ -29,7 +28,6 @@ const Payment = () => {
 
     const proceed = () => {
         //결제 진행
-
         const payInfos = checkedCartData.map(({ id, amount }) => (
             { id, amount }
         ))
