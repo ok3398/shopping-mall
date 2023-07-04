@@ -3,9 +3,11 @@ import CartItem from "./item";
 import {createRef, forwardRef, SyntheticEvent, useEffect, useRef, useState} from "react";
 import {useRecoilState, useSetRecoilState} from "recoil";
 import {checkedCartState} from "../../recoils/cart";
-import WillPay from "./willPay";
+import WillPay from "../willpay/willPay";
+import { useNavigate } from "react-router-dom";
 
 const CartList = ({ items}: {items: CartType[]}) => {
+    const navigate = useNavigate()
     const [checkedCartData, setCheckedCartData] = useRecoilState(checkedCartState)
     const formRef = useRef<HTMLFormElement>(null)
     const checkboxRefs = items.map(() => createRef<HTMLInputElement>())
@@ -43,6 +45,15 @@ const CartList = ({ items}: {items: CartType[]}) => {
         const data = new FormData(formRef.current)
         setFormData(data)
     }
+
+    const handleSubmit = () => {
+        if(checkedCartData.length) {
+            navigate('/payment')
+        } else {
+            alert('결제할 대상이 없어요')
+        }
+    }
+
     useEffect(() => {
         checkedCartData.forEach(item => {
             const itemRef = checkboxRefs.find(ref => ref.current!.dataset.id === item.id)
@@ -65,7 +76,7 @@ const CartList = ({ items}: {items: CartType[]}) => {
                     {items.map((item,i) => <CartItem {...item} key={item.id} ref={checkboxRefs[i]}/>)}
                 </ul>
             </form>
-            <WillPay/>
+            <WillPay submitTitle="결제창으로" handleSubmit={handleSubmit}/>
         </div>
     )
 }
